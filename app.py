@@ -8,6 +8,7 @@ if update_interval == (None):
     print("You must create the .env file with the config")
     error = True
 else:
+    update_interval = int(update_interval)
     error = False
 
 while error == False:

@@ -3,7 +3,10 @@
 "CREATE TABLE TRAFFIC (ID int PRIMARY KEY AUTO_INCREMENT, TX VARCHAR(50), RX VARCHAR(50), ACTUAL_TX VARCHAR(50), ACTUAL_RX VARCHAR(50), TS TIMESTAMP DEFAULT current_timestamp);"
 "DROP TABLE TRAFFIC;"
 import pymysql
-from env import database_host, database_name, database_table, database_user, database_password
+from env import database_host, database_user, database_password
+
+database_table = "TRAFFIC"
+database_name = "OPENWRT"
 
 def connect():
     try:

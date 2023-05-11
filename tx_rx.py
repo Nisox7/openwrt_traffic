@@ -1,7 +1,7 @@
 #pip3 install paramiko
 
 import paramiko
-from env import openwrt_ip, openwrt_user, openwrt_password
+from env import openwrt_ip, openwrt_user, openwrt_password, openwrt_interface
 
 #client
 client = paramiko.SSHClient()
@@ -44,45 +44,15 @@ def get_output(command):
             return "[!] Cannot connect to the SSH Server"
 
 def get_rx():
-    output = get_output("ash /root/scripts/wan_rx.sh")
+    command = r"""ifconfig {0} | awk '/RX bytes/ {{split($2, a, ":"); print a[2]}}'""".format(openwrt_interface)
+    output = get_output(command)
     return output
 
 def get_tx():
-    output = get_output("ash /root/scripts/wan_tx.sh")
+    command = r"""ifconfig {0} | awk '/TX bytes/ {{split($6, a, ":"); print a[2]}}'""".format(openwrt_interface)
+    output = get_output(command)
     return output
 
-def get_tx_rx():
-    output = get_output("ash /root/scripts/wan_tx_rx.sh")
-    return output
-
-
-def test(command):
-    # initialize the SSH client
-    error = False
-    
-    connection = False
-
-    if 1 == 1:
-
-
-        try:
-            client.connect(hostname=hostname, username=username, password=password, look_for_keys=False)
-            error = False
-        except:
-            print("[!] Cannot connect to the SSH Server")
-            error = True
-
-        if error == False:
-            try:
-                stdin, stdout, stderr = client.exec_command(command)
-                output = (stdout.read().decode())
-                print("RETURNED TRUE?")
-                return output
-                #err = stderr.read().decode()
-                #if err:
-                #   print(err)
-            except:
-                return "Error"
-        else:
-
-            return "[!] Cannot connect to the SSH Server"
+#def get_tx_rx():
+#    output = get_output("ash /root/scripts/wan_tx_rx.sh")
+#    return output
