@@ -31,7 +31,9 @@ def get_output(command):
             try:
                 stdin, stdout, stderr = client.exec_command(command)
                 output = (stdout.read().decode())
+                
                 connection = True
+                client.close()
                 return output
                 #err = stderr.read().decode()
                 #if err:
